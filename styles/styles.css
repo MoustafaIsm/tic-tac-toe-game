@@ -43,21 +43,22 @@ img {
     display: grid;
     grid-template-columns: repeat(3, 10vw);
     grid-template-rows: repeat(3, 10vw);
+    row-gap: 10px;
+    column-gap: 10px;
+}
+
+.card {
+    margin: 13%;
 }
 
 .position {
-    margin: 20px;
+    width: 100%;
 }
 
 .position:hover {
     cursor: pointer;
     background-color: #b084cc;
     border-radius: 10px;
-}
-
-.position > img {
-    border-radius: 10px;
-    width: 100%;
 }
 
 /* Result and Restart */
