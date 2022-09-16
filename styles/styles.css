@@ -1,0 +1,39 @@
+/* Reset */
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+img {
+    height: 100%;
+}
+
+/** Website Sections **/
+.body-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.body-wrapper * {
+    text-align: center;
+}
+
+/* Header */
+.header-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header-wrapper > * {
+    margin: 15px 0px;
+}
+
+
+/* Utilities */
+
+
+
+/* Media Query */
+
