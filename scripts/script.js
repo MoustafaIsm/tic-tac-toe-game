@@ -19,39 +19,42 @@ const restartGame = () => {
 for (let i = 0; i < positions.length; i++) {
     positions[i].addEventListener("click", () => {
         if (!gameEnded) {
-            // If yellow played
-            if (flag == "yellow") {
-                positions[i].src = yellow;
-                yellowPositions.push(i);
-                let yellowWon = checkIfWon(yellowPositions);
-                let gameTied = tieGame(yellowPositions);
-                if (yellowWon) {
-                    gameEnded = true;
-                    updateResultDisplay("yellow");
-                } else if (gameTied) {
-                    gameEnded = true;
-                    result.textContent = "Results: Tie!!";
-                } else {
-                    flag = "red";
+            if (!alreadyClicked(positions[i])) {
+                // If yellow played
+                if (flag == "yellow") {
+                    positions[i].src = yellow;
+                    yellowPositions.push(i);
+                    let yellowWon = checkIfWon(yellowPositions);
+                    let gameTied = tieGame(yellowPositions);
+                    if (yellowWon) {
+                        gameEnded = true;
+                        updateResultDisplay("yellow");
+                    } else if (gameTied) {
+                        gameEnded = true;
+                        result.textContent = "Results: Tie!!";
+                    } else {
+                        flag = "red";
+                    }
                 }
-            }
-            // If red played
-            else {
-                positions[i].src = red;
-                redPositions.push(i);
-                let redWon = checkIfWon(redPositions);
-                let gameTied = tieGame(redPositions);
-                if (redWon) {
-                    gameEnded = true;
-                    updateResultDisplay("red");
-                } else if (gameTied) {
-                    gameEnded = true;
-                    result.textContent = "Results: Tie!!";
-                } else {
-                    flag = "yellow";
+                // If red played
+                else {
+                    positions[i].src = red;
+                    redPositions.push(i);
+                    let redWon = checkIfWon(redPositions);
+                    let gameTied = tieGame(redPositions);
+                    if (redWon) {
+                        gameEnded = true;
+                        updateResultDisplay("red");
+                    } else if (gameTied) {
+                        gameEnded = true;
+                        result.textContent = "Results: Tie!!";
+                    } else {
+                        flag = "yellow";
+                    }
                 }
+                positions[i].classList.add("disabled");
+                changeTurnDisplay();
             }
-
         }
     });
 }
@@ -84,4 +87,12 @@ const tieGame = (array) => {
 const updateResultDisplay = (who) => {
     result.style.color = who;
     result.textContent = "Result: " + who + " WON !!";
+};
+
+const changeTurnDisplay = () => {
+    turn.textContent = "Turn: " + flag;
+};
+
+const alreadyClicked = (element) => {
+    return element.classList.contains("disabled") ? true : false;
 };
