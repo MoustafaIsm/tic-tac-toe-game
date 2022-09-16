@@ -34,7 +34,6 @@ for (let i = 0; i < positions.length; i++) {
                 } else {
                     flag = "red";
                 }
-                console.log("yellowPositions: " + yellowPositions);
             }
             // If red played
             else {
@@ -51,7 +50,6 @@ for (let i = 0; i < positions.length; i++) {
                 } else {
                     flag = "yellow";
                 }
-                console.log("redPositions: " + redPositions);
             }
 
         }
@@ -66,7 +64,7 @@ restartBtn.addEventListener("click", restartGame);
 const checkIfWon = (array) => {
     if (
         (array.includes(0) && array.includes(1) && array.includes(2)) ||
-        (array.includes(0) && array.includes(2) && array.includes(5)) ||
+        (array.includes(0) && array.includes(3) && array.includes(6)) ||
         (array.includes(0) && array.includes(4) && array.includes(8)) ||
         (array.includes(1) && array.includes(4) && array.includes(7)) ||
         (array.includes(2) && array.includes(5) && array.includes(8)) ||
