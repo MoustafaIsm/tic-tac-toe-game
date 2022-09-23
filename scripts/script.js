@@ -13,8 +13,7 @@ let gameEnded = false;
 
 // Event listeners functions
 const restartGame = () => {
-    // window.location.href = "./index.html";
-    console.log(findBestPosition(positions));
+    window.location.href = "./index.html";
 };
 
 // Event listeners
@@ -35,8 +34,9 @@ for (let i = 0; i < positions.length; i++) {
                         gameEnded = true;
                         result.textContent = "Results: Tie!!";
                     } else {
-                        // flag = "red";
-                        const bestPosition = findBestPosition(positions);
+                        positions[i].classList.add("disabled");
+                        // AI plays
+                        let bestPosition = findBestPosition(positions);
                         positions[bestPosition].src = red;
                         redPositions.push(bestPosition);
                         let redWon = checkIfWon(redPositions);
@@ -50,24 +50,6 @@ for (let i = 0; i < positions.length; i++) {
                         }
                         positions[bestPosition].classList.add("disabled");
                     }
-                    // If red played
-                    // else {
-                    //     positions[i].src = red;
-                    //     redPositions.push(i);
-                    //     let redWon = checkIfWon(redPositions);
-                    //     let gameTied = tieGame(redPositions);
-                    //     if (redWon) {
-                    //         gameEnded = true;
-                    //         updateResultDisplay("red");
-                    //     } else if (gameTied) {
-                    //         gameEnded = true;
-                    //         result.textContent = "Results: Tie!!";
-                    //     } else {
-                    //         flag = "yellow";
-                    //     }
-                    // }
-                    positions[i].classList.add("disabled");
-                    changeTurnDisplay();
                 }
             }
         }
@@ -104,36 +86,43 @@ const evaluation = () => {
         return 10;
     if (checkIfWon(yellowPositions))
         return -10;
-    if (tieGame)
-        return 0;
+    return 0;
 }
 
-const minmax = (board, depth, aiTurn) => {
-    let score = evaluation();
-    if (score == 10)
-        return score;
-    if (score == -10)
-        return score;
-    if (tieGame)
+const minmax = (board, depth, isMax) => {
+    // let score = evaluation();
+    if (checkIfWon(redPositions))
+        return 10;
+    if (checkIfWon(yellowPositions))
+        return -10;
+    if (tieGame(yellowPositions) || tieGame(redPositions))
         return 0;
-    if (aiTurn) {
+    if (isMax) {
         let best = -1000;
+        let index = 0;
         for (const position of board) {
             if (position.src == defaultSrc) {
                 position.src = red;
-                best = Math.max(best, minmax(board, depth + 1, !aiTurn));
+                redPositions.push(index);
+                best = Math.max(best, minmax(board, depth + 1, !isMax));
                 position.src = defaultSrc;
+                redPositions.pop();
             }
+            index++;
         }
         return best;
     } else {
         let best = 1000;
+        let index = 0;
         for (const position of board) {
             if (position.src == defaultSrc) {
                 position.src = yellow;
-                best = Math.min(best, minmax(board, depth + 1, !aiTurn));
+                yellowPositions.push(index);
+                best = Math.min(best, minmax(board, depth + 1, !isMax));
                 position.src = defaultSrc;
+                yellowPositions.pop();
             }
+            index++;
         }
         return best;
     }
@@ -146,11 +135,11 @@ const findBestPosition = (board) => {
     for (const position of board) {
         if (position.src == defaultSrc) {
             position.src = red;
-            let val = minmax(board, 0, false);
+            let val = minmax(board, 0, true);
             position.src = defaultSrc;
             if (val > best) {
-                bestMove = counter
-                best - val
+                bestMove = counter;
+                best = val;
             }
         }
         counter++;
